@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Panel</title>
+	<h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+</h:head>
+
+<h:body>
+	<f:facet name="last">
+		<h:outputStylesheet name="css/style.css"/>
+	</f:facet>
+	
+	<div class="new_worker">
+		<h:form id="formNew_worker">
+			<p:panel class="new_worker-panel-header" id="panel" header="Nowy pracownik">
+		
+				<p:messages id="msgs"/>
+		
+				<h:panelGrid class="new_worker-table" columns="8" cellpadding="5">
+					<p:outputLabel for="firstname" value="Imię:" />
+					<p:inputText id="firstname" value="#{addButton.firstname}" label="Imię" />
+
+					<p:outputLabel for="lastname" value="Nazwisko:" />
+					<p:inputText id="lastname" value="#{addButton.lastname}" label="Nazwisko" />
+		
+					<p:outputLabel for="email" value="E-mail:" />
+					<p:inputText id="email" value="#{addButton.email}" label="E-mail" />
+					
+					<p:outputLabel for="street" value="Ulica: " />
+					<p:inputText id="street" value="#{addButton.street}" label="Ulica" />
+		
+					<p:outputLabel for="number" value="Numer:" />
+					<p:inputText id="number" value="#{addButton.number}" label="Number" />
+		
+					<p:outputLabel for="flat" value="Mieszkanie:" />
+					<p:inputText id="flat" value="#{addButton.flat}" label="Mieszkanie" />
+					
+					<p:outputLabel for="city" value="Miejscowość:" />
+					<p:inputText id="city" value="#{addButton.city}" label="Miejscowość" />
+					
+					<p:outputLabel for="postcode" value="Kod pocztowy:" />
+					<p:inputText id="postcode" value="#{addButton.postcode}" label="Kod pocztowy" />
+				</h:panelGrid>
+				<p:commandButton class="new_worker-panel-button" value="Dodaj" update="msgs :formWorkers:tableWorkers" action="#{addButton.add}" />
+			</p:panel>
+		</h:form>
+	</div>
+	
+	<div class="workers">
+		<h:form id="formWorkers">
+			<p:growl id="msgs" showDetail="false" life="2000"/>
+			<p:dataTable id="tableWorkers" class="workers-dataTable-header" var="w" value="#{allWorkers.getWorkers()}" rows="20" 
+					paginator="true" editable="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+					rowsPerPageTemplate="20,100,500">
+	
+		        <p:ajax event="rowEdit" listener="#{editButton.onRowEdit}" update=":formWorkers:msgs" />
+		        <p:ajax event="rowEditCancel" listener="#{editButton.onRowCancel}" update=":formWorkers:msgs" />
+				
+				<f:facet name="header">
+       				Spis pracowników
+				</f:facet>
+				
+				<p:column class="workers-column-id workers-column-font" headerText="ID">
+					<h:outputText value="#{w.id}" />
+				</p:column>
+				
+				<p:column class="workers-column-firstname workers-column-font" headerText="Imię">
+	            	<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{w.firstname}" /></f:facet>
+		                <f:facet name="input"><p:inputText class="workers-input-firstname" value="#{w.firstname}" label="Imię"/></f:facet>
+	            	</p:cellEditor>
+				</p:column>
+				
+				<p:column class="workers-column-lastname workers-column-font" headerText="Nazwisko">
+	            	<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{w.lastname}" /></f:facet>
+		                <f:facet name="input"><p:inputText class="workers-input-lastname" value="#{w.lastname}" label="Nazwisko"/></f:facet>
+	            	</p:cellEditor>
+				</p:column>
+		
+				<p:column class="workers-column-street workers-column-font" headerText="Ulica">
+	            	<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{w.street}" /></f:facet>
+		                <f:facet name="input"><p:inputText class="workers-input-street" value="#{w.street}" label="Ulica"/></f:facet>
+	            	</p:cellEditor>
+				</p:column>
+				
+				<p:column class="workers-column-number workers-column-font" headerText="Nr">
+	            	<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{w.number}" /></f:facet>
+		                <f:facet name="input"><p:inputText class="workers-input-number" value="#{w.number}" label="Numer"/></f:facet>
+	            	</p:cellEditor>
+				</p:column>
+				
+				<p:column class="workers-column-flat workers-column-font" headerText="Lokal">
+	            	<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{w.flat}" /></f:facet>
+		                <f:facet name="input"><p:inputText class="workers-input-flat" value="#{w.flat}" label="Mieszkanie"/></f:facet>
+	            	</p:cellEditor>
+				</p:column>
+		
+				<p:column class="workers-column-postcode workers-column-font" headerText="Kod pocztowy">
+	            	<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{w.postcode}" /></f:facet>
+		                <f:facet name="input"><p:inputText class="workers-input-postcode" value="#{w.postcode}" label="Kod pocztowy"/></f:facet>
+	            	</p:cellEditor>
+				</p:column>
+		
+				<p:column class="workers-column-city workers-column-font" headerText="Miejscowość">
+	            	<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{w.city}" /></f:facet>
+		                <f:facet name="input"><p:inputText class="workers-input-city" value="#{w.city}" label="Miejscowość"/></f:facet>
+	            	</p:cellEditor>
+				</p:column>
+				
+				<p:column class="workers-column-email workers-column-font" headerText="E-mail">
+	            	<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{w.email}" /></f:facet>
+		                <f:facet name="input"><p:inputText class="workers-input-email" value="#{w.email}" label="E-mail"/></f:facet>
+	            	</p:cellEditor>
+				</p:column>
+				
+				<p:column class="workers-column-rowEditor">
+		            <p:rowEditor/>
+		        </p:column>
+			
+				<p:column class="workers-column-remover">
+					<p:commandButton action="#{removeButton.removeWorker(w.id)}" update=":formWorkers:msgs tableWorkers" icon="pi pi-trash remover" />
+		        </p:column>
+			</p:dataTable>
+		</h:form>
+	</div>
+
+</h:body>
+</html>
